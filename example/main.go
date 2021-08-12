@@ -40,17 +40,33 @@ func main() {
 	}
 	log.Printf("\nconsent_link: %s\n", consentLink)
 
-	institutions, _, err := client.Institution.List(openbank.AllInstitutions)
+	// returns institutions
+	allinstitutions, _, err := client.Institution.List(openbank.AllInstitutions)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Print(len(allinstitutions), allinstitutions[0])
 
-	institution, _, err := client.Institution.Get(institutions[3].ISPBCode)
+	// returns institutions participating in the SPI. Useful for PIX operations
+	SPIinstitutions, _, err := client.Institution.List(openbank.SPIParticipants)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Print(institutions[3].ISPBCode == institution.ISPBCode)
-	log.Printf("institution", institution)
+	log.Print(len(SPIinstitutions), SPIinstitutions[0])
+
+	// returns institutions participating in the STR. Useful for TED operations
+	STRinstitutions, _, err := client.Institution.List(openbank.STRParticipants)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Print(len(STRinstitutions), STRinstitutions[0])
+
+	// return institution by code or ISPB code
+	institution, _, err := client.Institution.Get(SPIinstitutions[0].ISPBCode)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Print(institution)
 
 	accounts, _, err := client.Account.List()
 	if err != nil {
