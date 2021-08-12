@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+
 	openbank "github.com/stone-co/go-stone-openbank"
 	"github.com/stone-co/go-stone-openbank/types"
 )
@@ -23,7 +24,7 @@ func main() {
 		openbank.WithPEMPrivateKey(pemPrivKey),
 		openbank.SetConsentURL(consentURL),
 		openbank.UseSandbox(),
-	//	openbank.EnableDebug(),
+		//	openbank.EnableDebug(),
 	)
 	if err != nil {
 		log.Fatal(err)
@@ -38,6 +39,18 @@ func main() {
 		log.Fatal(err)
 	}
 	log.Printf("\nconsent_link: %s\n", consentLink)
+
+	institutions, _, err := client.Institution.List(openbank.AllInstitutions)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	institution, _, err := client.Institution.Get(institutions[3].ISPBCode)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Print(institutions[3].ISPBCode == institution.ISPBCode)
+	log.Printf("institution", institution)
 
 	accounts, _, err := client.Account.List()
 	if err != nil {

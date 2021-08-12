@@ -52,6 +52,7 @@ type Client struct {
 	token oauth2.Token
 
 	//Services used for comunicating with API
+	Institution    *InstitutionService
 	Account        *AccountService
 	Transfer       *TransferService
 	PaymentInvoice *PaymentInvoiceService
@@ -94,6 +95,7 @@ func NewClient(opts ...ClientOpt) (*Client, error) {
 	c.Account = &AccountService{client: &c}
 	c.Transfer = &TransferService{client: &c}
 	c.PaymentInvoice = &PaymentInvoiceService{client: &c}
+	c.Institution = &InstitutionService{client: &c}
 
 	return &c, nil
 }
