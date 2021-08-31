@@ -70,6 +70,7 @@ func (c *Client) authClaims() jwt.MapClaims {
 		"exp":       now.Add(time.Hour * time.Duration(2)).Unix(),
 		"iat":       now.Unix(),
 		"jti":       uuid.New().String(),
+		"iss":       c.ClientID,
 		"nbf":       now.Unix(),
 		"realm":     "stone_bank",
 		"sub":       c.ClientID,
