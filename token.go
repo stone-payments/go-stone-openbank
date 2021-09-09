@@ -1,7 +1,7 @@
 package openbank
 
 import (
-	jwt "github.com/dgrijalva/jwt-go"
+	jwt "github.com/golang-jwt/jwt/v4"
 )
 
 func (c *Client) generateToken(claims jwt.MapClaims) (string, error) {
