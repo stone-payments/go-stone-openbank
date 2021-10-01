@@ -91,10 +91,12 @@ func (s *PaymentInvoiceService) Get(paymentInvoiceID string) (types.PaymentInvoi
 }
 
 func (s *PaymentInvoiceService) Cancel(paymentInvoiceID string) (*Response, error) {
-	path := fmt.Sprintf("/api/v1/barcode_payment_invoices/%s/cancel", paymentInvoiceID)
-	if strings.TrimSpace(paymentInvoiceID) == "" {
+	paymentInvoiceID = strings.TrimSpace(paymentInvoiceID)
+	if paymentInvoiceID == "" {
 		return nil, errors.New("payment_invoice_id can't be empty")
 	}
+
+	path := fmt.Sprintf("/api/v1/barcode_payment_invoices/%s/cancel", paymentInvoiceID)
 
 	req, err := s.client.NewAPIRequest(http.MethodPost, path, nil)
 	if err != nil {
@@ -103,7 +105,7 @@ func (s *PaymentInvoiceService) Cancel(paymentInvoiceID string) (*Response, erro
 
 	resp, err := s.client.Do(req, nil)
 	if err != nil {
-		return nil, err
+		return resp, err
 	}
 
 	return resp, nil
