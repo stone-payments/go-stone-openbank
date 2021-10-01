@@ -47,6 +47,13 @@ func main() {
 	}
 	log.Print(gameProviders)
 
+	// list all product values from psn store
+	products, _, err := client.TopUpsService.GetValuesFromGameProvider(2147)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Print(products)
+
 	// returns institutions
 	allinstitutions, _, err := client.Institution.List(openbank.AllInstitutions)
 	if err != nil {
