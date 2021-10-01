@@ -57,7 +57,7 @@ func (s *PaymentInvoiceService) List(accountID string) ([]types.PaymentInvoice, 
 	}
 
 	var dataResp struct {
-		Cursor types.Cursor     `json:"cursor"`
+		Cursor types.Cursor           `json:"cursor"`
 		Data   []types.PaymentInvoice `json:"data"`
 	}
 
@@ -88,4 +88,23 @@ func (s *PaymentInvoiceService) Get(paymentInvoiceID string) (types.PaymentInvoi
 	}
 
 	return paymentInvoice, resp, err
+}
+
+func (s *PaymentInvoiceService) Cancel(paymentInvoiceID string) (*Response, error) {
+	path := fmt.Sprintf("/api/v1/barcode_payment_invoices/%s/cancel", paymentInvoiceID)
+	if strings.TrimSpace(paymentInvoiceID) == "" {
+		return nil, errors.New("payment_invoice_id can't be empty")
+	}
+
+	req, err := s.client.NewAPIRequest(http.MethodPost, path, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.client.Do(req, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
 }
