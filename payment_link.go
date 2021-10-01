@@ -36,7 +36,7 @@ func (s *PaymentLinkService) Get(accountID, orderID string) (types.PaymentLink, 
 
 	resp, err := s.client.Do(req, &paymentLink)
 	if err != nil {
-		return types.PaymentLink{}, nil, err
+		return types.PaymentLink{}, resp, err
 	}
 
 	return paymentLink, resp, nil
