@@ -7,13 +7,13 @@ import (
 "github.com/stone-co/go-stone-openbank/types"
 )
 
-// PixService handles communication with Stone Openbank API
-type PixService struct {
+// PIXService handles communication with Stone Openbank API
+type PIXService struct {
 	client *Client
 }
 
 // GetOutboundPix is a service used to retrieve information details from a Pix.
-func (s *PixService) GetOutboundPix(id string) (*types.PixOutBoundOutput, *Response, error) {
+func (s *PIXService) GetOutboundPix(id string) (*types.PIXOutBoundOutput, *Response, error) {
 
 	path := fmt.Sprintf("/api/v1/pix/outbound_pix_payments/%s", id)
 
@@ -22,7 +22,7 @@ func (s *PixService) GetOutboundPix(id string) (*types.PixOutBoundOutput, *Respo
 		return nil, nil, err
 	}
 
-	var pix types.PixOutBoundOutput
+	var pix types.PIXOutBoundOutput
 	resp, err := s.client.Do(req, &pix)
 	if err != nil {
 		return nil, resp, err

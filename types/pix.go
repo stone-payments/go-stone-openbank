@@ -10,7 +10,7 @@ type TargetOrSourceAccount struct {
 	Institution Institution `json:"institution"`
 }
 
-type PixOutBoundOutput struct {
+type PIXOutBoundOutput struct {
 	ID                       string               `json:"id"`
 	AccountID                string               `json:"account_id"`
 	Amount                   int                  `json:"amount"`
