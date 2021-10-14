@@ -30,3 +30,21 @@ func (s *PIXService) GetOutboundPix(id string) (*types.PIXOutBoundOutput, *Respo
 
 	return &pix, resp, err
 }
+
+// GetQRCodeData is a service used to retrieve information details from a Pix QRCode.
+func (s *PIXService) GetQRCodeData(input types.GetQRCodeInput) (*types.QRCode, *Response, error) {
+	const path = "/api/v1/pix/outbound_pix_payments/brcodes"
+
+	req, err := s.client.NewAPIRequest(http.MethodGet, path, input)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var qrcode types.QRCode
+	resp, err := s.client.Do(req, &qrcode)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return &qrcode, resp, err
+}

@@ -34,3 +34,39 @@ type PIXOutBoundOutput struct {
 	ApprovedBy               string               `json:"approved_by"`
 	ApprovedAt               string               `json:"approved_at"`
 }
+
+type GetQRCodeInput struct {
+	BRCode       string `json:"brcode"`
+	OwnerAccount string `json:"owner_account,omitempty"`
+	Date         string `json:"payment_date,omitempty"`
+}
+
+type QRCode struct {
+	Type    string        `json:"type"`
+	Static  QRCodeStatic  `json:"static,omitempty"`
+	Dynamic QRCodeDynamic `json:"dynamic,omitempty"`
+}
+
+type QRCodeDynamic struct {
+	CreatedAt   string `json:"created_at,omitempty"`
+	RequestedAt string `json:"requested_at,omitempty"`
+	Expiration  int    `json:"expiration,omitempty"`
+	Key         string `json:"key,omitempty"`
+	Customer    struct {
+		Name         string `json:"name"`
+		Document     string `json:"document"`
+		DocumentType string `json:"document_type"`
+	} `json:"customer"`
+	Revision          int    `json:"revision,omitempty"`
+	RequestedForPayer string `json:"request_for_payer,omitempty"`
+	Status            string `json:"status,omitempty"`
+	TxnID             string `json:"transaction_id,omitempty"`
+	Amount            int    `json:"amount,omitempty"`
+}
+
+type QRCodeStatic struct {
+	Key    string `json:"key,omitempty"`
+	Type   string `json:"phone,omitempty"`
+	TxnID  string `json:"transaction_id,omitempty"`
+	Amount int    `json:"amount,omitempty"`
+}
