@@ -58,6 +58,7 @@ type Client struct {
 	PaymentInvoice *PaymentInvoiceService
 	PIXService     *PIXService
 	PaymentLink    *PaymentLinkService
+	TopUpsService  *TopUpsService
 }
 
 func NewClient(opts ...ClientOpt) (*Client, error) {
@@ -98,6 +99,7 @@ func NewClient(opts ...ClientOpt) (*Client, error) {
 	c.Transfer = &TransferService{client: &c}
 	c.PaymentInvoice = &PaymentInvoiceService{client: &c}
 	c.Institution = &InstitutionService{client: &c}
+	c.TopUpsService = &TopUpsService{client: &c}
 	c.PIXService = &PIXService{client: &c}
 	c.PaymentLink = &PaymentLinkService{client: &c}
 

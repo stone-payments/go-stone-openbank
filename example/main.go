@@ -40,6 +40,13 @@ func main() {
 	}
 	log.Printf("\nconsent_link: %s\n", consentLink)
 
+	//list all game providers
+	gameProviders, _, err := client.TopUpsService.ListGameProviders()
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Print(gameProviders)
+
 	// returns institutions
 	allinstitutions, _, err := client.Institution.List(openbank.AllInstitutions)
 	if err != nil {
