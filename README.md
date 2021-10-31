@@ -5,7 +5,7 @@ A Go library to connect with [Stone Open Banking API](https://docs.openbank.ston
 ## How to install
 
 ```sh
-  $ go get github.com/stone-co/go-stone-openbank
+go get github.com/stone-co/go-stone-openbank
 ```
 
 ## Example Usage
