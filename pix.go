@@ -17,7 +17,7 @@ func (s *PIXService) GetOutboundPix(id string) (*types.PIXOutBoundOutput, *Respo
 
 	path := fmt.Sprintf("/api/v1/pix/outbound_pix_payments/%s", id)
 
-	req, err := s.client.NewAPIRequest(http.MethodGet, path, nil)
+	req, err := s.client.NewAPIRequest(http.MethodGet, path, emptyIdempotencyKey,nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -35,7 +35,7 @@ func (s *PIXService) GetOutboundPix(id string) (*types.PIXOutBoundOutput, *Respo
 func (s *PIXService) GetQRCodeData(input types.GetQRCodeInput) (*types.QRCode, *Response, error) {
 	const path = "/api/v1/pix/outbound_pix_payments/brcodes"
 
-	req, err := s.client.NewAPIRequest(http.MethodGet, path, input)
+	req, err := s.client.NewAPIRequest(http.MethodGet, path, emptyIdempotencyKey, input)
 	if err != nil {
 		return nil, nil, err
 	}

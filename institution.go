@@ -24,7 +24,7 @@ func (s InstitutionService) Get(context string) (*types.Institution, *Response, 
 
 	path := fmt.Sprintf("/api/v1/institutions/%s", context)
 
-	req, err := s.client.NewAPIRequest(http.MethodGet, path, nil)
+	req, err := s.client.NewAPIRequest(http.MethodGet, path, emptyIdempotencyKey, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -43,7 +43,7 @@ func (s InstitutionService) List(context InstitutionContext) ([]types.Institutio
 
 	path := fmt.Sprintf("/api/v1/institutions?context=%s", context)
 
-	req, err := s.client.NewAPIRequest(http.MethodGet, path, nil)
+	req, err := s.client.NewAPIRequest(http.MethodGet, path, emptyIdempotencyKey, nil)
 	if err != nil {
 		return nil, nil, err
 	}

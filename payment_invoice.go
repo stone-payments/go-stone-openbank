@@ -9,8 +9,6 @@ import (
 	"github.com/stone-co/go-stone-openbank/types"
 )
 
-const idempotencyKeyMaxSize = 72
-
 // PaymentInvoiceService handlers communication with Stone Openbank API
 type PaymentInvoiceService struct {
 	client *Client
@@ -23,16 +21,9 @@ func (s *PaymentInvoiceService) PaymentInvoice(input types.PaymentInvoiceInput, 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewAPIRequest(http.MethodPost, path, input)
+	req, err := s.client.NewAPIRequest(http.MethodPost, path, idempotencyKey, input)
 	if err != nil {
 		return nil, nil, err
-	}
-
-	if idempotencyKey != "" {
-		if len(idempotencyKey) > idempotencyKeyMaxSize {
-			return nil, nil, errors.New("invalid idempotency key")
-		}
-		req.Header.Add("x-stone-idempotency-key", idempotencyKey)
 	}
 
 	var paymentInvoice types.PaymentInvoice
@@ -51,7 +42,7 @@ func (s *PaymentInvoiceService) List(accountID string) ([]types.PaymentInvoice, 
 		return nil, nil, errors.New("account_id can't be empty")
 	}
 
-	req, err := s.client.NewAPIRequest(http.MethodGet, path, nil)
+	req, err := s.client.NewAPIRequest(http.MethodGet, path, emptyIdempotencyKey, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -77,7 +68,7 @@ func (s *PaymentInvoiceService) Get(paymentInvoiceID string) (types.PaymentInvoi
 		return paymentInvoice, nil, errors.New("payment_invoice_id can't be empty")
 	}
 
-	req, err := s.client.NewAPIRequest(http.MethodGet, path, nil)
+	req, err := s.client.NewAPIRequest(http.MethodGet, path, emptyIdempotencyKey, nil)
 	if err != nil {
 		return paymentInvoice, nil, err
 	}
@@ -98,7 +89,7 @@ func (s *PaymentInvoiceService) Cancel(paymentInvoiceID string) (*Response, erro
 
 	path := fmt.Sprintf("/api/v1/barcode_payment_invoices/%s/cancel", paymentInvoiceID)
 
-	req, err := s.client.NewAPIRequest(http.MethodPost, path, nil)
+	req, err := s.client.NewAPIRequest(http.MethodPost, path, emptyIdempotencyKey,nil)
 	if err != nil {
 		return nil, err
 	}

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/rsa"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -20,12 +21,14 @@ import (
 )
 
 const (
-	libraryVersion    = "1.0"
-	prodAccountURL    = "https://accounts.openbank.stone.com.br"
-	sandboxAccountURL = "https://sandbox-accounts.openbank.stone.com.br"
-	prodAPIBaseURL    = "https://api.openbank.stone.com.br"
-	sandboxAPIBaseURL = "https://sandbox-api.openbank.stone.com.br"
-	userAgent         = "go-stone-openbank/" + libraryVersion
+	libraryVersion        = "1.0"
+	prodAccountURL        = "https://accounts.openbank.stone.com.br"
+	sandboxAccountURL     = "https://sandbox-accounts.openbank.stone.com.br"
+	prodAPIBaseURL        = "https://api.openbank.stone.com.br"
+	sandboxAPIBaseURL     = "https://sandbox-api.openbank.stone.com.br"
+	userAgent             = "go-stone-openbank/" + libraryVersion
+	idempotencyKeyMaxSize = 72
+	emptyIdempotencyKey   = ""
 )
 
 type Client struct {
@@ -238,7 +241,7 @@ func CheckResponse(r *http.Response) error {
 
 // NewAPIRequest creates an API request. A relative URL PATH can be provided in pathStr, which will be resolved to the
 // ApiBaseURL of the Client.
-func (c *Client) NewAPIRequest(method, pathStr string, body interface{}) (*http.Request, error) {
+func (c *Client) NewAPIRequest(method, pathStr, idempotencyKey string, body interface{}) (*http.Request, error) {
 	u, err := c.ApiBaseURL.Parse(pathStr)
 	if err != nil {
 		return nil, err
@@ -260,6 +263,14 @@ func (c *Client) NewAPIRequest(method, pathStr string, body interface{}) (*http.
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("User-Agent", c.UserAgent)
+
+	if idempotencyKey != "" {
+		if len(idempotencyKey) > idempotencyKeyMaxSize {
+			return nil, errors.New("invalid idempotency key")
+		}
+		req.Header.Add("x-stone-idempotency-key", idempotencyKey)
+	}
+
 	return req, nil
 }
 
