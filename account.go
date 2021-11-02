@@ -20,7 +20,7 @@ func (s *AccountService) Get(id string) (*types.Account, *Response, error) {
 
 	path := fmt.Sprintf("/api/v1/accounts/%s", id)
 
-	req, err := s.client.NewAPIRequest(http.MethodGet, path, nil)
+	req, err := s.client.NewAPIRequest(http.MethodGet, path, emptyIdempotencyKey, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -39,7 +39,7 @@ func (s *AccountService) List() ([]types.Account, *Response, error) {
 
 	path := "/api/v1/accounts?paginate=true"
 
-	req, err := s.client.NewAPIRequest(http.MethodGet, path, nil)
+	req, err := s.client.NewAPIRequest(http.MethodGet, path, emptyIdempotencyKey, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -62,7 +62,7 @@ func (s *AccountService) GetBalance(id string) (*types.Balance, *Response, error
 
 	path := fmt.Sprintf("/api/v1/accounts/%s/balance", id)
 
-	req, err := s.client.NewAPIRequest(http.MethodGet, path, nil)
+	req, err := s.client.NewAPIRequest(http.MethodGet, path, emptyIdempotencyKey, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -81,7 +81,7 @@ func (s *AccountService) GetStatement(id string) ([]types.Statement, *Response, 
 
 	path := fmt.Sprintf("/api/v1/accounts/%s/statement", id)
 
-	req, err := s.client.NewAPIRequest(http.MethodGet, path, nil)
+	req, err := s.client.NewAPIRequest(http.MethodGet, path, emptyIdempotencyKey, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -104,7 +104,7 @@ func (s *AccountService) GetStatementEntry(id string) (*types.Statement, *Respon
 
 	path := fmt.Sprintf("/api/v1/statement/entries/%s", id)
 
-	req, err := s.client.NewAPIRequest(http.MethodGet, path, nil)
+	req, err := s.client.NewAPIRequest(http.MethodGet, path, emptyIdempotencyKey, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -126,7 +126,7 @@ func (s *AccountService) GetFees(accountID string, feeType string) (*types.Fee, 
 
 	path := fmt.Sprintf("/api/v1/accounts/%s/fees/%s", accountID, feeType)
 
-	req, err := s.client.NewAPIRequest(http.MethodGet, path, nil)
+	req, err := s.client.NewAPIRequest(http.MethodGet, path, emptyIdempotencyKey, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -144,7 +144,7 @@ func (s *AccountService) GetFees(accountID string, feeType string) (*types.Fee, 
 func (s *AccountService) ListFees(accountID string) ([]types.Fee, *Response, error) {
 	path := fmt.Sprintf("/api/v1/accounts/%s/fees", accountID)
 
-	req, err := s.client.NewAPIRequest(http.MethodGet, path, nil)
+	req, err := s.client.NewAPIRequest(http.MethodGet, path, emptyIdempotencyKey, nil)
 	if err != nil {
 		return nil, nil, err
 	}
