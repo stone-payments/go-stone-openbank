@@ -70,3 +70,27 @@ type QRCodeStatic struct {
 	TxnID  string `json:"transaction_id,omitempty"`
 	Amount int    `json:"amount,omitempty"`
 }
+
+type BeneficiaryAccount struct {
+	BranchCode string `json:"branch_code"`
+	AccountCode string `json:"account_code"`
+	AccountType string `json:"account_type"`
+	CreatedAt string `json:"created_at"`
+}
+
+type BeneficiaryEntity struct {
+	Name string `json:"name"`
+	DocumentType string `json:"document_type"`
+	Document string `json:"document"`
+}
+
+type KeyPIX struct {
+	ID string `json:"id"`
+	Key string `json:"key"`
+	KeyType string `json:"key_type"`
+	KeyStatus string `json:"key_status"`
+	AccountID string `json:"account_id"`
+	ParticipantISPB string `json:"participant_ispb"`
+	BeneficiaryAccount *BeneficiaryAccount `json:"beneficiary_account"`
+	BeneficiaryEntity *BeneficiaryEntity `json:"beneficiary_entity"`
+}
