@@ -222,6 +222,31 @@ func main() {
 			log.Printf("Payment Invoice[%d]: %+v\n", i, invoice)
 		}
 	}
+
+	//List Keys Pix
+	accountID := "968cc34d-d827-448b-ac1b-e6e29836a160"
+	idempotencyKey := uuid.New().String()
+	keysPix, _, err := client.PIXService.ListKeys(accountID, idempotencyKey)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Keys Pix: %+v\n", keysPix)
+
+	//Get Outbound Pix
+	PixID := "b5c2354c-91a0-4837-bb15-7f88fcd9d4c5"
+	outBoundPix, _, err := client.PIXService.GetOutboundPix(PixID)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Outbound Pix: %+v\n", outBoundPix)
+
+	//Get QRCode Data
+	getQRCodeInput := types.GetQRCodeInput{BRCode: "00020126580014br.gov.bcb.pix0136123e4567-e12b-12d1-a456-4266554400005204000053039865802BR5913Fulano de Tal6008BRASILIA62070503***63041D3D"}
+	qrCode, _, err := client.PIXService.GetQRCodeData(getQRCodeInput)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("QRCode Data: %+v\n", qrCode)
 }
 
 func readFileContent(path string) []byte {
