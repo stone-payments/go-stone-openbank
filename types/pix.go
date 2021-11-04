@@ -88,7 +88,7 @@ type KeyPIX struct {
 	ID string `json:"id"`
 	Key string `json:"key"`
 	KeyType string `json:"key_type"`
-	KeyStatus string `json:"key_status"`
+	Status string `json:"status"`
 	AccountID string `json:"account_id"`
 	ParticipantISPB string `json:"participant_ispb"`
 	BeneficiaryAccount *BeneficiaryAccount `json:"beneficiary_account"`
