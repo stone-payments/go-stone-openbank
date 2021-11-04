@@ -84,7 +84,7 @@ type BeneficiaryEntity struct {
 	Document string `json:"document"`
 }
 
-type KeyPIX struct {
+type PIXKey struct {
 	ID string `json:"id"`
 	Key string `json:"key"`
 	KeyType string `json:"key_type"`

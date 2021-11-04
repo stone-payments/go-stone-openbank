@@ -49,8 +49,8 @@ func (s *PIXService) GetQRCodeData(input types.GetQRCodeInput) (*types.QRCode, *
 	return &qrcode, resp, err
 }
 
-//ListKeys list the keys PIX of an account
-func (s *PIXService) ListKeys(accountID string, idempotencyKey string) ([]types.KeyPIX, *Response, error){
+//ListKeys list the PIX keys of an account
+func (s *PIXService) ListKeys(accountID string, idempotencyKey string) ([]types.PIXKey, *Response, error){
 	path := fmt.Sprintf("/api/v1/pix/%s/entries", accountID)
 
 	req, err := s.client.NewAPIRequest(http.MethodGet, path, idempotencyKey, nil)
@@ -59,8 +59,8 @@ func (s *PIXService) ListKeys(accountID string, idempotencyKey string) ([]types.
 	}
 
 	var dataResp struct {
-		Cursor types.Cursor `json:"cursor"`
-		Data   []types.KeyPIX  `json:"data"`
+		Cursor types.Cursor   `json:"cursor"`
+		Data   []types.PIXKey `json:"data"`
 	}
 
 	resp, err := s.client.Do(req, &dataResp)
