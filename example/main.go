@@ -223,14 +223,14 @@ func main() {
 		}
 	}
 
-	//List Keys Pix
+	//List PIX Keys
 	accountID := "968cc34d-d827-448b-ac1b-e6e29836a160"
 	idempotencyKey := uuid.New().String()
-	keysPix, _, err := client.PIXService.ListKeys(accountID, idempotencyKey)
+	pixKeys, _, err := client.PIXService.ListKeys(accountID, idempotencyKey)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Keys Pix: %+v\n", keysPix)
+	log.Printf("Keys Pix: %+v\n", pixKeys)
 
 	//Get Outbound Pix
 	PixID := "b5c2354c-91a0-4837-bb15-7f88fcd9d4c5"
