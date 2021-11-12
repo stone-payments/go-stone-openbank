@@ -61,7 +61,12 @@ func (s *TransferService) transfer(input types.TransferInput, idempotencyKey, pa
 		path = fmt.Sprintf("%s/internal_transfers", path)
 	}
 
-	req, err := s.client.NewAPIRequest(http.MethodPost, path, idempotencyKey, input)
+	req, err := s.client.NewAPIRequest(http.MethodPost, path, input)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	err = s.client.AddIdempotencyHeader(req, idempotencyKey)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -88,7 +93,7 @@ func (s *TransferService) ListExternal(accountID string) ([]types.Transfer, *Res
 }
 
 func (s *TransferService) list(path string) ([]types.Transfer, *Response, error) {
-	req, err := s.client.NewAPIRequest(http.MethodGet, path, emptyIdempotencyKey, nil)
+	req, err := s.client.NewAPIRequest(http.MethodGet, path, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -119,7 +124,7 @@ func (s *TransferService) GetExternal(transferID string) (*types.Transfer, *Resp
 }
 
 func (s *TransferService) get(path string) (*types.Transfer, *Response, error) {
-	req, err := s.client.NewAPIRequest(http.MethodGet, path, emptyIdempotencyKey,nil)
+	req, err := s.client.NewAPIRequest(http.MethodGet, path,nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -146,7 +151,7 @@ func (s *TransferService) CancelExternal(transferID string) (*Response, error) {
 }
 
 func (s *TransferService) cancel(path string) (*Response, error) {
-	req, err := s.client.NewAPIRequest(http.MethodDelete, path, emptyIdempotencyKey,nil)
+	req, err := s.client.NewAPIRequest(http.MethodDelete, path,nil)
 	if err != nil {
 		return nil, err
 	}

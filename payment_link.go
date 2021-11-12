@@ -27,7 +27,7 @@ func (s *PaymentLinkService) Get(accountID, orderID string) (types.PaymentLink, 
 
 	path := fmt.Sprintf("/api/v1/payment_links/%s/orders/%s", accountID, orderID)
 
-	req, err := s.client.NewAPIRequest(http.MethodGet, path, emptyIdempotencyKey, nil)
+	req, err := s.client.NewAPIRequest(http.MethodGet, path, nil)
 	if err != nil {
 		return types.PaymentLink{}, nil, err
 	}
@@ -45,7 +45,7 @@ func (s *PaymentLinkService) Get(accountID, orderID string) (types.PaymentLink, 
 func (s *PaymentLinkService) Create(input types.PaymentLinkInput) (types.PaymentLink, *Response, error) {
 	path := "/api/v1/payment_links/orders"
 
-	req, err := s.client.NewAPIRequest(http.MethodPost, path, emptyIdempotencyKey, input)
+	req, err := s.client.NewAPIRequest(http.MethodPost, path, input)
 	if err != nil {
 		return types.PaymentLink{}, nil, err
 	}
@@ -73,7 +73,7 @@ func (s *PaymentLinkService) Cancel(orderID string, input types.PaymentLinkCance
 
 	path := fmt.Sprintf("/api/v1/payment_links/orders/%s/closed", orderID)
 
-	req, err := s.client.NewAPIRequest(http.MethodPatch, path, emptyIdempotencyKey, input)
+	req, err := s.client.NewAPIRequest(http.MethodPatch, path, input)
 	if err != nil {
 		return types.PaymentLink{}, nil, err
 	}

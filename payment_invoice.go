@@ -21,7 +21,12 @@ func (s *PaymentInvoiceService) PaymentInvoice(input types.PaymentInvoiceInput, 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewAPIRequest(http.MethodPost, path, idempotencyKey, input)
+	req, err := s.client.NewAPIRequest(http.MethodPost, path, input)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	err = s.client.AddIdempotencyHeader(req, idempotencyKey)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -42,7 +47,7 @@ func (s *PaymentInvoiceService) List(accountID string) ([]types.PaymentInvoice, 
 		return nil, nil, errors.New("account_id can't be empty")
 	}
 
-	req, err := s.client.NewAPIRequest(http.MethodGet, path, emptyIdempotencyKey, nil)
+	req, err := s.client.NewAPIRequest(http.MethodGet, path, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -68,7 +73,7 @@ func (s *PaymentInvoiceService) Get(paymentInvoiceID string) (types.PaymentInvoi
 		return paymentInvoice, nil, errors.New("payment_invoice_id can't be empty")
 	}
 
-	req, err := s.client.NewAPIRequest(http.MethodGet, path, emptyIdempotencyKey, nil)
+	req, err := s.client.NewAPIRequest(http.MethodGet, path, nil)
 	if err != nil {
 		return paymentInvoice, nil, err
 	}
@@ -89,7 +94,7 @@ func (s *PaymentInvoiceService) Cancel(paymentInvoiceID string) (*Response, erro
 
 	path := fmt.Sprintf("/api/v1/barcode_payment_invoices/%s/cancel", paymentInvoiceID)
 
-	req, err := s.client.NewAPIRequest(http.MethodPost, path, emptyIdempotencyKey,nil)
+	req, err := s.client.NewAPIRequest(http.MethodPost, path,nil)
 	if err != nil {
 		return nil, err
 	}

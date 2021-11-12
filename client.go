@@ -28,7 +28,6 @@ const (
 	sandboxAPIBaseURL     = "https://sandbox-api.openbank.stone.com.br"
 	userAgent             = "go-stone-openbank/" + libraryVersion
 	idempotencyKeyMaxSize = 72
-	emptyIdempotencyKey   = ""
 )
 
 type Client struct {
@@ -241,7 +240,7 @@ func CheckResponse(r *http.Response) error {
 
 // NewAPIRequest creates an API request. A relative URL PATH can be provided in pathStr, which will be resolved to the
 // ApiBaseURL of the Client.
-func (c *Client) NewAPIRequest(method, pathStr, idempotencyKey string, body interface{}) (*http.Request, error) {
+func (c *Client) NewAPIRequest(method, pathStr string, body interface{}) (*http.Request, error) {
 	u, err := c.ApiBaseURL.Parse(pathStr)
 	if err != nil {
 		return nil, err
@@ -264,14 +263,19 @@ func (c *Client) NewAPIRequest(method, pathStr, idempotencyKey string, body inte
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("User-Agent", c.UserAgent)
 
+	return req, nil
+}
+
+//AddIdempotencyHeader add in request the header used to realize idempotent operations
+func (c *Client) AddIdempotencyHeader(req *http.Request, idempotencyKey string) error {
 	if idempotencyKey != "" {
 		if len(idempotencyKey) > idempotencyKeyMaxSize {
-			return nil, errors.New("invalid idempotency key")
+			return errors.New("invalid idempotency key")
 		}
 		req.Header.Add("x-stone-idempotency-key", idempotencyKey)
 	}
 
-	return req, nil
+	return nil
 }
 
 func (c *Client) Do(req *http.Request, v interface{}) (*Response, error) {
