@@ -94,7 +94,7 @@ func (s *PaymentInvoiceService) Cancel(paymentInvoiceID string) (*Response, erro
 
 	path := fmt.Sprintf("/api/v1/barcode_payment_invoices/%s/cancel", paymentInvoiceID)
 
-	req, err := s.client.NewAPIRequest(http.MethodPost, path,nil)
+	req, err := s.client.NewAPIRequest(http.MethodPost, path, nil)
 	if err != nil {
 		return nil, err
 	}

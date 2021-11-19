@@ -17,7 +17,7 @@ func (s *PIXService) GetOutboundPix(id string) (*types.PIXOutBoundOutput, *Respo
 
 	path := fmt.Sprintf("/api/v1/pix/outbound_pix_payments/%s", id)
 
-	req, err := s.client.NewAPIRequest(http.MethodGet, path,nil)
+	req, err := s.client.NewAPIRequest(http.MethodGet, path, nil)
 	if err != nil {
 		return nil, nil, err
 	}

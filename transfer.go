@@ -124,7 +124,7 @@ func (s *TransferService) GetExternal(transferID string) (*types.Transfer, *Resp
 }
 
 func (s *TransferService) get(path string) (*types.Transfer, *Response, error) {
-	req, err := s.client.NewAPIRequest(http.MethodGet, path,nil)
+	req, err := s.client.NewAPIRequest(http.MethodGet, path, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -151,7 +151,7 @@ func (s *TransferService) CancelExternal(transferID string) (*Response, error) {
 }
 
 func (s *TransferService) cancel(path string) (*Response, error) {
-	req, err := s.client.NewAPIRequest(http.MethodDelete, path,nil)
+	req, err := s.client.NewAPIRequest(http.MethodDelete, path, nil)
 	if err != nil {
 		return nil, err
 	}
