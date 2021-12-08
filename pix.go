@@ -100,7 +100,7 @@ func (s *PIXService) ListDynamicQRCodes(accountID string) ([]types.QRCodeDynamic
 }
 
 // DynamicQRCode make a bar code payment invoice
-func (s *PIXService) DynamicQRCode(input types.QRCodeDynamic, idempotencyKey string) (*types.QRCodeDynamic, *Response, error) {
+func (s *PIXService) DynamicQRCode(input types.QRCodeDynamicInput, idempotencyKey string) (*types.QRCodeDynamic, *Response, error) {
 	path := "/api/v1/pix_payment_invoices"
 	if err := input.Validate(); err != nil {
 		return nil, nil, err
