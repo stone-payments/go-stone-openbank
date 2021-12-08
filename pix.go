@@ -50,15 +50,10 @@ func (s *PIXService) GetQRCodeData(input types.GetQRCodeInput) (*types.QRCode, *
 }
 
 //ListKeys list the PIX keys of an account
-func (s *PIXService) ListKeys(accountID string, idempotencyKey string) ([]types.PIXKey, *Response, error){
+func (s *PIXService) ListKeys(accountID string) ([]types.PIXKey, *Response, error){
 	path := fmt.Sprintf("/api/v1/pix/%s/entries", accountID)
 
 	req, err := s.client.NewAPIRequest(http.MethodGet, path, nil)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	err = s.client.AddIdempotencyHeader(req, idempotencyKey)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -74,4 +69,58 @@ func (s *PIXService) ListKeys(accountID string, idempotencyKey string) ([]types.
 	}
 
 	return dataResp.Data, resp, err
+}
+
+
+//ListQRCodeDynamic list the dynamic qrcodes of an account
+func (s *PIXService) ListDynamicQRCodes(accountID string) ([]types.QRCodeDynamic, *Response, error){
+	path := fmt.Sprintf("/api/v1/pix_payment_invoices/?account_id=%s", accountID)
+
+	req, err := s.client.NewAPIRequest(http.MethodGet, path, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	err = s.client.AddAccountIdHeader(req, accountID)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var dataResp struct {
+		Cursor types.Cursor   `json:"cursor"`
+		Data   []types.QRCodeDynamic `json:"data"`
+	}
+
+	resp, err := s.client.Do(req, &dataResp)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return dataResp.Data, resp, err
+}
+
+// DynamicQRCode make a bar code payment invoice
+func (s *PIXService) DynamicQRCode(input types.QRCodeDynamic, idempotencyKey string) (*types.QRCodeDynamic, *Response, error) {
+	path := "/api/v1/pix_payment_invoices"
+	if err := input.Validate(); err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewAPIRequest(http.MethodPost, path, input)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	err = s.client.AddIdempotencyHeader(req, idempotencyKey)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var qrcode types.QRCodeDynamic
+	resp, err := s.client.Do(req, &qrcode)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return &qrcode, resp, err
 }

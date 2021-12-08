@@ -278,6 +278,15 @@ func (c *Client) AddIdempotencyHeader(req *http.Request, idempotencyKey string) 
 	return nil
 }
 
+//AddAccountIdHeader add in request the header used in some pix operations and maybe others
+func (c *Client) AddAccountIdHeader(req *http.Request, accountId string) error {
+	if accountId != "" {
+		req.Header.Add("x-stone-account-id", accountId)
+	}
+
+	return nil
+}
+
 func (c *Client) Do(req *http.Request, v interface{}) (*Response, error) {
 	if c.debug {
 		d, _ := httputil.DumpRequestOut(req, true)
