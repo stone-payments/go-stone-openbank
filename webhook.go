@@ -4,8 +4,9 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"gopkg.in/square/go-jose.v2"
 	"io/ioutil"
+
+	"gopkg.in/square/go-jose.v2"
 )
 
 const (
@@ -51,7 +52,7 @@ func getPayload(jwe *jose.JSONWebSignature) ([]byte, error) {
 		return nil, err
 	}
 
-	b, err := base64.StdEncoding.DecodeString(p.Payload)
+	b, err := base64.RawStdEncoding.DecodeString(p.Payload)
 	if err != nil {
 		return nil, err
 	}
