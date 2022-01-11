@@ -1,6 +1,9 @@
 package types
 
-import "errors"
+import (
+	"errors"
+	"time"
+)
 
 type TargetOrSourceAccount struct {
 	Account struct {
@@ -67,16 +70,135 @@ type QRCodeDynamic struct {
 	AdditionalData    []QRCodeAdditionalData `json:"additional_data,omitempty"`
 }
 
+type PIXInvoiceOutput struct {
+	ID              string                 `json:"id"`
+	AccountID       string                 `json:"account_id"`
+	Status          string                 `json:"status"`
+	Key             string                 `json:"key"`
+	KeyType         string                 `json:"key_type"`
+	TransactionID   string                 `json:"transaction_id"`
+	Amount          int                    `json:"amount"`
+	AdditionalData  []QRCodeAdditionalData `json:"additional_data"`
+	RequestID       string                 `json:"request_id"`
+	CreatedAt       time.Time              `json:"created_at"`
+	UpdatedAt       time.Time              `json:"updated_at"`
+	PaidAt          time.Time              `json:"paid_at,omitempty"`
+	CancelleddAt    time.Time              `json:"cancelled_at,omitempty"`
+	CreatedBy       string                 `json:"created_by"`
+	LastUpdatedBy   string                 `json:"last_updated_by"`
+	Expiration      int                    `json:"expiration"`
+	QrCodeContent   string                 `json:"qr_code_content"`
+	QrCodeImage     string                 `json:"qr_code_image"`
+	RequestForPayer string                 `json:"request_for_payer"`
+}
+
+type CreatePedingPaymentInput struct {
+	AccountID     string                 `json:"account_id,omitempty"`
+	Amount        int                    `json:"amount,omitempty"`
+	Description   string                 `json:"description,omitempty"`
+	TransactionID string                 `json:"transaction_id,omitempty"`
+	Key           string                 `json:"key,omitempty"`
+	Source        *TargetOrSourceAccount `json:"source,omitempty"`
+}
+type PendingPaymentOutput struct {
+	ID                       string      `json:"id"`
+	AccountID                string      `json:"account_id"`
+	Amount                   int         `json:"amount"`
+	CreatedAt                time.Time   `json:"created_at"`
+	CreatedBy                string      `json:"created_by"`
+	Description              string      `json:"description"`
+	TransactionID            string      `json:"transaction_id"`
+	Key                      string      `json:"key"`
+	EndToEndID               string      `json:"end_to_end_id"`
+	FailedAt                 interface{} `json:"failed_at"`
+	FailureReasonCode        interface{} `json:"failure_reason_code"`
+	FailureReasonDescription interface{} `json:"failure_reason_description"`
+	MoneyReservedAt          interface{} `json:"money_reserved_at"`
+	RefundedAmount           int         `json:"refunded_amount"`
+	RequestID                string      `json:"request_id"`
+	SettledAt                interface{} `json:"settled_at"`
+	Source                   struct {
+		Account struct {
+			AccountCode string `json:"account_code"`
+			AccountType string `json:"account_type"`
+			BranchCode  string `json:"branch_code"`
+		} `json:"account"`
+		Entity struct {
+			Document     string `json:"document"`
+			DocumentType string `json:"document_type"`
+			Name         string `json:"name"`
+		} `json:"entity"`
+		Institution struct {
+			Ispb string `json:"ispb"`
+			Name string `json:"name"`
+		} `json:"institution"`
+	} `json:"source"`
+	Status string `json:"status"`
+	Target struct {
+		Account struct {
+			AccountCode string `json:"account_code"`
+			AccountType string `json:"account_type"`
+			BranchCode  string `json:"branch_code"`
+		} `json:"account"`
+		Entity struct {
+			Document     string `json:"document"`
+			DocumentType string `json:"document_type"`
+			Name         string `json:"name"`
+		} `json:"entity"`
+		Institution struct {
+			Ispb string `json:"ispb"`
+			Name string `json:"name"`
+		} `json:"institution"`
+	} `json:"target"`
+}
+
+type ConfirmPendingPaymentInput struct {
+	Amount              int    `json:"amount"`
+	Description         string `json:"description"`
+	AddTargetToContacts bool   `json:"add_target_to_contacts"`
+}
+
 type QRCodeAdditionalData struct {
 	Name  string `json:"name"`
 	Value string `json:"value"`
 }
 
-type QRCodeDynamicInput struct {
-	Amount    int    `json:"amount,omitempty"`
-	AccountID string `json:"account_id"`
-	Key       string `json:"key,omitempty"`
-	TxnID     string `json:"transaction_id,omitempty"`
+type CreateDynamicQRCodeInput struct {
+	Amount          int                    `json:"amount,omitempty"`
+	AccountID       string                 `json:"account_id"`
+	Key             string                 `json:"key,omitempty"`
+	TransactionID   string                 `json:"transaction_id,omitempty"`
+	AdditionalData  []QRCodeAdditionalData `json:"additional_data,omitempty"`
+	RequestForPayer string                 `json:"request_for_payer"`
+}
+
+type AllPixEntries struct {
+	Cursor struct {
+	} `json:"cursor"`
+	Data []struct {
+		ID                 string `json:"id"`
+		Key                string `json:"key"`
+		KeyType            string `json:"key_type"`
+		KeyStatus          string `json:"key_status"`
+		AccountID          string `json:"account_id"`
+		ParticipantIspb    string `json:"participant_ispb"`
+		BeneficiaryAccount struct {
+			BranchCode  string    `json:"branch_code"`
+			AccountCode string    `json:"account_code"`
+			AccountType string    `json:"account_type"`
+			CreatedAt   time.Time `json:"created_at"`
+		} `json:"beneficiary_account"`
+		BeneficiaryEntity struct {
+			Name         string `json:"name"`
+			DocumentType string `json:"document_type"`
+			Document     string `json:"document"`
+		} `json:"beneficiary_entity"`
+	} `json:"data"`
+}
+
+type Customer struct {
+	Name     string `json:"name"`
+	Document string `json:"document"`
 }
 
 type QRCodeStatic struct {
@@ -110,7 +232,7 @@ type PIXKey struct {
 	BeneficiaryEntity  *BeneficiaryEntity  `json:"beneficiary_entity"`
 }
 
-func (p QRCodeDynamicInput) Validate() error {
+func (p CreateDynamicQRCodeInput) Validate() error {
 	if p.AccountID == "" {
 		return errors.New("account_id can't be empty")
 	}
@@ -119,8 +241,11 @@ func (p QRCodeDynamicInput) Validate() error {
 		return errors.New("key can't be empty")
 	}
 
-	if p.TxnID == "" {
+	if p.TransactionID == "" {
 		return errors.New("transaction_id can't be empty")
+	}
+	if len(p.TransactionID) < 26 || len(p.TransactionID) > 35 {
+		return errors.New("transaction_id size need to be between 26 and 35 caracteres")
 	}
 
 	return nil
