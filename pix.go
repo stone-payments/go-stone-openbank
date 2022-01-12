@@ -124,16 +124,11 @@ func (s *PIXService) CreateDynamicQRCode(input types.CreateDynamicQRCodeInput, i
 	return &pixInvoiceOutput, resp, err
 }
 
-// GetEntries is a service used to retrieve all Pix entries.
-func (s *PIXService) GetEntries(accountID string, idempotencyKey string) (*types.AllPixEntries, *Response, error) {
+// GetEntries is a service used to retrieve all Pix entries of a given account.
+func (s *PIXService) GetEntries(accountID string) (*types.AllPixEntries, *Response, error) {
 	path := fmt.Sprintf("/api/v1/pix/%s/entries", accountID)
 
 	req, err := s.client.NewAPIRequest(http.MethodGet, path, nil)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	err = s.client.AddIdempotencyHeader(req, idempotencyKey)
 	if err != nil {
 		return nil, nil, err
 	}
