@@ -28,7 +28,7 @@ const (
 	prodAPIBaseURL        = "https://api.openbank.stone.com.br"
 	sandboxAPIBaseURL     = "https://sandbox-api.openbank.stone.com.br"
 	prodSiteURL           = "https://conta.stone.com.br"
-	sandboxSiteURL        = "http://sandbox.conta.stone.com.br"
+	sandboxSiteURL        = "https://sandbox.conta.stone.com.br"
 	userAgent             = "go-stone-openbank/" + libraryVersion
 	idempotencyKeyMaxSize = 72
 )
