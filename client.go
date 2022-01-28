@@ -27,6 +27,8 @@ const (
 	sandboxAccountURL     = "https://sandbox-accounts.openbank.stone.com.br"
 	prodAPIBaseURL        = "https://api.openbank.stone.com.br"
 	sandboxAPIBaseURL     = "https://sandbox-api.openbank.stone.com.br"
+	prodSiteURL           = "https://conta.stone.com.br"
+	sandboxSiteURL        = "http://sandbox.conta.stone.com.br"
 	userAgent             = "go-stone-openbank/" + libraryVersion
 	idempotencyKeyMaxSize = 72
 )
@@ -39,6 +41,7 @@ type Client struct {
 
 	AccountURL *url.URL
 	ApiBaseURL *url.URL
+	SiteURL    *url.URL
 
 	StonePublicKeys types.StonePublicKeys
 
@@ -67,9 +70,11 @@ type Client struct {
 func NewClient(opts ...ClientOpt) (*Client, error) {
 	accountURL, _ := url.Parse(prodAccountURL)
 	apiURL, _ := url.Parse(prodAPIBaseURL)
+	siteURL, _ := url.Parse(prodSiteURL)
 	log := logrus.New().WithFields(logrus.Fields{
 		"apiURL":     apiURL.String(),
 		"accountURL": accountURL.String(),
+		"siteURL":    siteURL.String(),
 	})
 
 	c := Client{
@@ -77,6 +82,7 @@ func NewClient(opts ...ClientOpt) (*Client, error) {
 		UserAgent:       userAgent,
 		AccountURL:      accountURL,
 		ApiBaseURL:      apiURL,
+		SiteURL:         siteURL,
 		StonePublicKeys: make(types.StonePublicKeys),
 		log:             log,
 		m:               &sync.Mutex{},
@@ -159,9 +165,11 @@ func UseSandbox() ClientOpt {
 	return func(c *Client) {
 		accountURL, _ := url.Parse(sandboxAccountURL)
 		apiURL, _ := url.Parse(sandboxAPIBaseURL)
+		siteURL, _ := url.Parse(sandboxSiteURL)
 		c.Sandbox = true
 		c.ApiBaseURL = apiURL
 		c.AccountURL = accountURL
+		c.SiteURL = siteURL
 	}
 }
 

@@ -15,8 +15,8 @@ func (c *Client) ConsentLink(sessionID string) (string, error) {
 		return "", err
 	}
 
-	pathURL := fmt.Sprintf("/#/consent?type=consent&client_id=%s&jwt=%s", c.ClientID, tokenString)
-	u, err := c.AccountURL.Parse(pathURL)
+	pathURL := fmt.Sprintf("/consentimento?client_id=%s&jwt=%s", c.ClientID, tokenString)
+	u, err := c.SiteURL.Parse(pathURL)
 	if err != nil {
 		return "", err
 	}
