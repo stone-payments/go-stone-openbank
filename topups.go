@@ -7,13 +7,13 @@ import (
 	"github.com/stone-co/go-stone-openbank/types"
 )
 
-// TopUpsService handles communication with Stone Openbank API
-type TopUpsService struct {
+// TopupsService handles communication with Stone Openbank API
+type TopupsService struct {
 	client *Client
 }
 
 // ListGameProviders list all game providers
-func (s *TopUpsService) ListGameProviders() (*types.Providers, *Response, error) {
+func (s *TopupsService) ListGameProviders() (*types.Providers, *Response, error) {
 	const path = "api/v1/topups/games/providers"
 
 	req, err := s.client.NewAPIRequest(http.MethodGet, path, nil)
@@ -31,7 +31,7 @@ func (s *TopUpsService) ListGameProviders() (*types.Providers, *Response, error)
 }
 
 // GetValuesFromGameProvider list all values from a game provider
-func (s *TopUpsService) GetValuesFromGameProvider(id int) (*types.Products, *Response, error) {
+func (s *TopupsService) GetValuesFromGameProvider(id int) (*types.Products, *Response, error) {
 	path := fmt.Sprintf("/api/v1/topups/games/values/%v", id)
 
 	req, err := s.client.NewAPIRequest(http.MethodGet, path, nil)

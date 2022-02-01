@@ -9,6 +9,7 @@ type Account struct {
 	OwnerID            string `json:"owner_id"`
 	OwnerName          string `json:"owner_name"`
 	RestrictedFeatures bool   `json:"restricted_features"`
+	CreatedAt          string `json:"created_at,omitempty"`
 }
 
 //Balance represents a Stone PaymentAccount Balance

@@ -172,30 +172,6 @@ type CreateDynamicQRCodeInput struct {
 	RequestForPayer string                 `json:"request_for_payer"`
 }
 
-type AllPixEntries struct {
-	Cursor struct {
-	} `json:"cursor"`
-	Data []struct {
-		ID                 string `json:"id"`
-		Key                string `json:"key"`
-		KeyType            string `json:"key_type"`
-		KeyStatus          string `json:"key_status"`
-		AccountID          string `json:"account_id"`
-		ParticipantIspb    string `json:"participant_ispb"`
-		BeneficiaryAccount struct {
-			BranchCode  string    `json:"branch_code"`
-			AccountCode string    `json:"account_code"`
-			AccountType string    `json:"account_type"`
-			CreatedAt   time.Time `json:"created_at"`
-		} `json:"beneficiary_account"`
-		BeneficiaryEntity struct {
-			Name         string `json:"name"`
-			DocumentType string `json:"document_type"`
-			Document     string `json:"document"`
-		} `json:"beneficiary_entity"`
-	} `json:"data"`
-}
-
 type Customer struct {
 	Name     string `json:"name"`
 	Document string `json:"document"`
@@ -221,7 +197,7 @@ type BeneficiaryEntity struct {
 	Document     string `json:"document"`
 }
 
-type PIXKey struct {
+type PixEntry struct {
 	ID                 string              `json:"id"`
 	Key                string              `json:"key"`
 	KeyType            string              `json:"key_type"`
@@ -230,6 +206,15 @@ type PIXKey struct {
 	ParticipantISPB    string              `json:"participant_ispb"`
 	BeneficiaryAccount *BeneficiaryAccount `json:"beneficiary_account"`
 	BeneficiaryEntity  *BeneficiaryEntity  `json:"beneficiary_entity"`
+}
+
+type CreateEntryInput struct {
+	Key              string `json:"key"`
+	KeyType          string `json:"key_type"`
+	AccountID        string `json:"account_id"`
+	ParticipantISPB  string `json:"participant_ispb"`
+	VerificationID   string `json:"verification_id,omitempty"`
+	VerificationCode string `json:"verification_code,omitempty"`
 }
 
 func (p CreateDynamicQRCodeInput) Validate() error {

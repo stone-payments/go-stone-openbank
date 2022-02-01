@@ -62,9 +62,9 @@ type Client struct {
 	Account        *AccountService
 	Transfer       *TransferService
 	PaymentInvoice *PaymentInvoiceService
-	PIXService     *PIXService
+	Pix            *PixService
 	PaymentLink    *PaymentLinkService
-	TopUpsService  *TopUpsService
+	Topups         *TopupsService
 }
 
 func NewClient(opts ...ClientOpt) (*Client, error) {
@@ -105,12 +105,12 @@ func NewClient(opts ...ClientOpt) (*Client, error) {
 
 	//Set services
 	c.Account = &AccountService{client: &c}
-	c.Transfer = &TransferService{client: &c}
-	c.PaymentInvoice = &PaymentInvoiceService{client: &c}
 	c.Institution = &InstitutionService{client: &c}
-	c.TopUpsService = &TopUpsService{client: &c}
-	c.PIXService = &PIXService{client: &c}
 	c.PaymentLink = &PaymentLinkService{client: &c}
+	c.PaymentInvoice = &PaymentInvoiceService{client: &c}
+	c.Pix = &PixService{client: &c}
+	c.Topups = &TopupsService{client: &c}
+	c.Transfer = &TransferService{client: &c}
 
 	return &c, nil
 }
@@ -187,6 +187,9 @@ func EnableDebug() ClientOpt {
 }
 
 func (c *Client) ApplyOpts(opts ...ClientOpt) {
+	if opts == nil {
+		return
+	}
 	for _, opt := range opts {
 		opt(c)
 	}
