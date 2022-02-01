@@ -26,7 +26,7 @@ func (c *Client) DecryptAndValidateWebhook(encryptedJWE string) ([]byte, error) 
 
 	signatureKey, err := c.getSignatureKey(jwe.Signatures)
 	if err != nil {
-		return nil, fmt.Errorf(`error geting signature key: %w`, err)
+		return nil, fmt.Errorf(`error getting signature key: %w`, err)
 	}
 
 	if _, err := jwe.Verify(signatureKey); err != nil {
