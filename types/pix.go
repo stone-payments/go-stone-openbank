@@ -208,7 +208,7 @@ type PixEntry struct {
 	BeneficiaryEntity  *BeneficiaryEntity  `json:"beneficiary_entity"`
 }
 
-type CreateEntryInput struct {
+type CreatePixEntryInput struct {
 	Key              string `json:"key"`
 	KeyType          string `json:"key_type"`
 	AccountID        string `json:"account_id"`
