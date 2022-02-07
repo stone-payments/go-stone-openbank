@@ -71,11 +71,6 @@ func NewClient(opts ...ClientOpt) (*Client, error) {
 	accountURL, _ := url.Parse(prodAccountURL)
 	apiURL, _ := url.Parse(prodAPIBaseURL)
 	siteURL, _ := url.Parse(prodSiteURL)
-	log := logrus.New().WithFields(logrus.Fields{
-		"apiURL":     apiURL.String(),
-		"accountURL": accountURL.String(),
-		"siteURL":    siteURL.String(),
-	})
 
 	c := Client{
 		client:          http.DefaultClient,
@@ -84,7 +79,6 @@ func NewClient(opts ...ClientOpt) (*Client, error) {
 		ApiBaseURL:      apiURL,
 		SiteURL:         siteURL,
 		StonePublicKeys: make(types.StonePublicKeys),
-		log:             log,
 		m:               &sync.Mutex{},
 	}
 
@@ -111,6 +105,14 @@ func NewClient(opts ...ClientOpt) (*Client, error) {
 	c.Pix = &PixService{client: &c}
 	c.Topups = &TopupsService{client: &c}
 	c.Transfer = &TransferService{client: &c}
+
+	// Set log
+	log := logrus.New().WithFields(logrus.Fields{
+		"apiURL":     c.ApiBaseURL.String(),
+		"accountURL": c.AccountURL.String(),
+		"siteURL":    c.SiteURL.String(),
+	})
+	c.log = log
 
 	return &c, nil
 }

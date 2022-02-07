@@ -83,6 +83,21 @@ func TestNewClient(t *testing.T) {
 	testClientDefaults(t, c)
 }
 
+func TestClientWithSandboxURLs(t *testing.T) {
+	c, _ := NewClient(UseSandbox())
+	if c.ApiBaseURL == nil || c.ApiBaseURL.String() != sandboxAPIBaseURL {
+		t.Errorf("NewClient ApiBaseURL = %v, expected %v", c.ApiBaseURL, sandboxAPIBaseURL)
+	}
+
+	if c.AccountURL == nil || c.AccountURL.String() != sandboxAccountURL {
+		t.Errorf("NewClient AccountURL = %v, expected %v", c.AccountURL, sandboxAccountURL)
+	}
+
+	if c.SiteURL == nil || c.SiteURL.String() != sandboxSiteURL {
+		t.Errorf("NewClient SiteURL = %v, expected %v", c.AccountURL, sandboxAccountURL)
+	}
+}
+
 func TestNewAPIRequest(t *testing.T) {
 	c, _ := NewClient()
 
