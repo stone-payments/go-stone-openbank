@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+    name: go-stone-openbank
+    title: Stone Openbank
+    description: A Go library to connect with Stone Open Banking API
+    namespace: stone
+    tags:
+      - openbank
+      - soc
+spec:
+    type: service
+    owner: stone-payments/soc-sre-writer
+    lifecycle: production
